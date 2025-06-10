@@ -1,0 +1,166 @@
+<app-menu-lateral></app-menu-lateral>
+
+<ion-header>
+  <ion-toolbar class="sub-toolbar">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" [routerLink]="['/home']">
+        <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Registrar Mascota</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form (ngSubmit)="guardarMascota(form)" #form="ngForm">
+    <ion-item>
+      <ion-icon name="person-outline" slot="start"></ion-icon>
+      <ion-label position="stacked">Nombre de tu Mascota</ion-label>
+      <ion-input
+        type="text"
+        name="nombre"
+        [(ngModel)]="mascota.nombre"
+        required
+        #nombreCtrl="ngModel"
+        placeholder="¿Cómo se llama tu mascota?"
+      ></ion-input>
+      <ion-text
+        class="p-error"
+        color="danger"
+        *ngIf="(form.submitted || nombreCtrl.touched) && nombreCtrl.invalid"
+      >
+        <p class="ion-padding-start">El nombre es obligatorio.</p>
+      </ion-text>
+    </ion-item>
+
+    <ion-item>
+      <div class="ion-text-center ion-margin-top">
+        <img
+          [src]="mascota.foto || imagenPorDefecto()"
+          alt="Foto de la mascota"
+          style="width: 150px; border-radius: 10px"
+        />
+      </div>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="calendar-outline" slot="start"></ion-icon>
+      <ion-label position="stacked">Fecha de nacimiento estimada</ion-label>
+
+      <div class="ion-margin-top">
+        <ion-datetime-button datetime="fechaNacimiento"></ion-datetime-button>
+      </div>
+
+      <ion-text
+        class="p-error"
+        color="danger"
+        *ngIf="form.submitted && !mascota.fechaNacimiento"
+      >
+        <p class="ion-padding-start">Selecciona la fecha de nacimiento.</p>
+      </ion-text>
+    </ion-item>
+
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime
+          id="fechaNacimiento"
+          name="fechaNacimiento"
+          presentation="date"
+          color="tertiary"
+          [showDefaultButtons]="true"
+          doneText="¡Listo!"
+          cancelText="Nah"
+          (ionChange)="guardarFechaNacimiento($event)"
+        >
+        </ion-datetime>
+      </ng-template>
+    </ion-modal>
+
+    <ion-item>
+      <ion-icon name="paw-outline" slot="start"></ion-icon>
+      <ion-label position="stacked">Especie</ion-label>
+      <ion-select
+        [(ngModel)]="mascota.especie"
+        name="especie"
+        required
+        (ionChange)="actualizarFotoPorEspecie()"
+        #especieCtrl="ngModel"
+      >
+        <ion-select-option value="Gato">Gato</ion-select-option>
+        <ion-select-option value="Perro">Perro</ion-select-option>
+      </ion-select>
+      <ion-text
+        class="p-error"
+        color="danger"
+        *ngIf="(form.submitted || especieCtrl.touched) && especieCtrl.invalid"
+      >
+        <p class="ion-padding-start">La especie es obligatoria.</p>
+      </ion-text>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon
+        name="color-palette-outline"
+        slot="start"
+        class="ion-icon"
+      ></ion-icon>
+      <ion-label position="stacked">Colores</ion-label>
+      <ion-input
+        type="text"
+        name="colores"
+        [(ngModel)]="mascota.colores"
+        required
+        placeholder="Ej: Naranjo y Blanco"
+        #coloresCtrl="ngModel"
+      ></ion-input>
+      <ion-text
+        class="p-error"
+        color="danger"
+        *ngIf="(form.submitted || coloresCtrl.touched) && coloresCtrl.invalid"
+      >
+        <p class="ion-padding-start">El color es obligatorio.</p>
+      </ion-text>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon
+        name="male-female-outline"
+        slot="start"
+        class="ion-icon"
+      ></ion-icon>
+      <ion-label position="stacked">Sexo</ion-label>
+      <ion-select
+        [(ngModel)]="mascota.sexo"
+        name="sexo"
+        required
+        #sexoCtrl="ngModel"
+      >
+        <ion-select-option value="" disabled>Seleccione...</ion-select-option>
+        <ion-select-option value="Macho">Macho</ion-select-option>
+        <ion-select-option value="Hembra">Hembra</ion-select-option>
+      </ion-select>
+      <ion-text
+        class="p-error"
+        color="danger"
+        *ngIf="(form.submitted || sexoCtrl.touched) && sexoCtrl.invalid"
+      >
+        <p class="ion-padding-start">Debes seleccionar el sexo.</p>
+      </ion-text>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="hardware-chip-outline" slot="start"></ion-icon>
+      <ion-label position="stacked">N° Chip</ion-label>
+      <ion-input
+        name="chip"
+        [(ngModel)]="mascota.chip"
+        #chipCtrl="ngModel"
+        placeholder="Opcional"
+      ></ion-input>
+    </ion-item>
+
+    <ion-button expand="block" class="ion-margin-top" type="submit">
+      Guardar
+    </ion-button>
+  </form>
+</ion-content>

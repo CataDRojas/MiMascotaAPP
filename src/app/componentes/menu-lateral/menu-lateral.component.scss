@@ -1,0 +1,15 @@
+ion-content {
+  --background: url('/assets/fondos/fondo3.jpg');
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+ion-toolbar ion-title {
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: #3178c6;
+}

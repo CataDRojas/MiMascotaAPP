@@ -1,0 +1,56 @@
+<app-menu-lateral></app-menu-lateral>
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>MiMascota</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content id="main-content" class="ion-padding">
+  <h2 class="home-section-title">
+    {{ mascotas.length > 0 ? 'Tus mascotas' : 'Mis Mascotas' }}
+  </h2>
+
+  <!-- Mensaje si no hay mascotas -->
+  <div *ngIf="mascotas.length === 0" class="no-mascotas-container">
+    <img
+      src="/assets/fondos/empty-paw.png"
+      alt="Sin mascotas"
+      class="no-mascotas-img"
+    />
+    <p class="no-mascotas-text">Aún no tienes mascotas registradas</p>
+    <ion-button routerLink="/registrar-mascota" class="registrar-btn">
+      Registrar tu mascota
+    </ion-button>
+  </div>
+
+  <!-- Cuando hay mascotas registradas, aparece la lista de mascotas -->
+  <ion-grid *ngIf="mascotas.length > 0">
+    <ion-row>
+      <ion-col size="12" size-md="6" *ngFor="let mascota of mascotas">
+        <ion-card class="mascota-card" (click)="verFichaMascota(mascota)">
+          <img
+            [src]="mascota.foto || 'assets/img-mascota/alonso.jpg'"
+            alt="foto mascota"
+            class="foto-mascota"
+          />
+          <ion-card-content>
+            <ion-card-title class="nombre-mascota"
+              >{{ mascota.nombre }}</ion-card-title
+            >
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Botón flotante para registrar mascota -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button routerLink="/registrar-mascota">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

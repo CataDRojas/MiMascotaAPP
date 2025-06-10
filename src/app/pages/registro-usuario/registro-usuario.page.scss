@@ -1,0 +1,85 @@
+ion-content {
+  --background: url('/assets/fondos/fondo2.jpg');
+}
+
+.home-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+}
+
+.home-container {
+  width: 100%;
+  max-width: 450px;
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.home-title {
+  text-align: center;
+  color: #3c3c3c;
+  font-size: 1.8rem;
+  margin-bottom: 0.25rem;
+  font-size: 35px;
+  font-weight: bold;
+  color: #222;
+}
+
+.input-item {
+  margin-bottom: 0.3rem;
+}
+
+.p-error {
+  font-size: 0.7rem;
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+.btn-volver {
+  --background: #5b9dbc;
+  --color: white;
+  --box-shadow: none;
+  --background-activated: #5b9dbc;
+}
+
+.btn-limpiar {
+  --background: #f0ad4e;
+  --color: white;
+  --box-shadow: none;
+  --background-activated: #e89829;
+}
+
+.btn-crear {
+  --background: #5b9dbc;
+  --color: white;
+  --box-shadow: none;
+  --background-activated: #5b9dbc;
+}
+
+//animacion para el boton limpiar
+@keyframes moverIzqADer {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(20px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.anim-mover {
+  animation: moverIzqADer 1s ease forwards;
+}
+

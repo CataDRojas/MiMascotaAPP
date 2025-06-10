@@ -1,0 +1,95 @@
+<app-menu-lateral></app-menu-lateral>
+
+<ion-header>
+  <ion-toolbar class="sub-toolbar">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" [routerLink]="['/home']">
+        <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Ficha de {{ mascota?.nombre }}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button fill="clear">
+        <ion-icon name="create-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content id="main-content" *ngIf="mascota" class="ion-padding">
+  <div class="foto-container ion-text-center ion-margin-bottom">
+    <img
+      [src]="mascota.foto"
+      alt="Foto de {{ mascota.nombre }}"
+      class="foto-mascota"
+    />
+  </div>
+
+  <div class="info-container">
+    <ion-list lines="none">
+      <ion-item>
+        <ion-icon name="person-outline" slot="start"></ion-icon>
+        <ion-label>
+          <h2>Nombre</h2>
+          <p>{{ mascota.nombre }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon name="calendar-outline" slot="start"></ion-icon>
+        <ion-label>
+          <h2>Fecha Nac. Estimada</h2>
+          <p>{{ mascota.fechaNacimiento | formatearFecha}}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon name="paw-outline" slot="start"></ion-icon>
+        <ion-label>
+          <h2>Especie</h2>
+          <p>{{ mascota.especie }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon name="color-palette-outline" slot="start"></ion-icon>
+        <ion-label>
+          <h2>Colores</h2>
+          <p>{{ mascota.colores }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon
+          name="male-female-outline"
+          slot="start"
+          class="ion-icon"
+        ></ion-icon>
+        <ion-label>
+          <h2>Sexo</h2>
+          <p>{{ mascota.sexo }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon name="hardware-chip-outline" slot="start"></ion-icon>
+        <ion-label>
+          <h2>N° de Chip</h2>
+          <p>{{ mascota.chip || 'No tiene' }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-button
+      expand="block"
+      color="danger"
+      (click)="borrarMascota()"
+      class="ion-margin-top"
+    >
+      <ion-icon slot="start" name="trash-outline"></ion-icon>
+      Borrar Mascota
+    </ion-button>
+  </div>
+</ion-content>

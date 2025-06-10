@@ -1,0 +1,46 @@
+<ion-content class="ion-padding login-content">
+  <div class="login-container">
+    <h1 class="login-title">MiMascota</h1>
+    <p class="login-subtitle">La ficha de tu mascota, ¡ahora digital!</p>
+    <h2 class="login-title2">Iniciar Sesión</h2>
+
+    <form (ngSubmit)="login(form)" #form="ngForm">
+      <ion-item class="input-item">
+        <ion-label position="floating">Correo Electronico</ion-label>
+        <ion-input
+          [(ngModel)]="correo"
+          name="correo"
+          required
+          type="email"
+        ></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="form.submitted && isEmailInvalid()">
+        <p class="ion-padding-start">Ingresa un correo electrónico válido.</p>
+      </ion-text>
+
+      <ion-item class="input-item">
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input
+          [(ngModel)]="contrasena"
+          name="contrasena"
+          required
+          type="password"
+          pattern="\\d{6}"
+        ></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="form.submitted && isPasswordInvalid()">
+        <p class="ion-padding-start">Debe ser numérica de 6 dígitos.</p>
+      </ion-text>
+
+      <ion-button expand="block" type="submit" class="login-button">
+        Ingresar
+      </ion-button>
+    </form>
+
+    <p class="login-subtitle">¿Olvidaste tu contraseña?</p>
+    <h4 class="login-h4">¿No tienes una cuenta?</h4>
+    <ion-button expand="block" (click)="registroUsuario()" class="login-button">
+      Registrate
+    </ion-button>
+  </div>
+</ion-content>

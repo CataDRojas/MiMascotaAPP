@@ -1,0 +1,28 @@
+ion-content {
+  --background: url('/assets/fondos/fondo2.jpg');
+}
+.sub-toolbar {
+  --background: #d6f2ff;
+  --color: #000000;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+ion-icon {
+  font-size: 1.4rem;
+  color: #5b9dbc;
+  margin-right: 0.5rem;
+}
+.ion-margin-top {
+--background: #4a90e2;
+  --background-activated: #357ab8;
+  --color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  margin-bottom: 8px;
+}
+
+.p-error {
+  font-size: 0.7rem;
+}

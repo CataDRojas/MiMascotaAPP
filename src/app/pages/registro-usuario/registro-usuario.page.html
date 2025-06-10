@@ -1,0 +1,168 @@
+<ion-content class="ion-padding home-content">
+  <div class="home-container">
+    <h2 class="home-title">Crea tu cuenta MiMascota</h2>
+
+    <form (ngSubmit)="registrar(form)" #form="ngForm">
+      <ion-item class="input-item">
+        <ion-label position="floating"></ion-label>
+        <ion-input
+          name="nombres"
+          [(ngModel)]="nombres"
+          required
+          [class.anim-mover]="animarNombre"
+          #nombresCtrl="ngModel"
+          placeholder="Nombres"
+        ></ion-input>
+      </ion-item>
+      <ion-text
+        class="p-error"
+        color="danger"
+        *ngIf="(form.submitted || nombresCtrl.touched) && isNombreInvalid()"
+      >
+        <p class="ion-padding-start">
+          No puede estar vacío y debe contener solo letras.
+        </p>
+      </ion-text>
+
+      <ion-item class="input-item">
+        <ion-label position="floating"></ion-label>
+        <ion-input
+          name="apellidopat"
+          [(ngModel)]="apellidoPat"
+          required
+          [class.anim-mover]="animarApellido"
+          #apellidoPatCtrl="ngModel"
+          placeholder="Apellido Paterno"
+        ></ion-input>
+      </ion-item>
+      <ion-text
+        class="p-error"
+        color="danger"
+        *ngIf="(form.submitted || apellidoPatCtrl.touched) && isApellidoPatInvalid()"
+      >
+        <p class="ion-padding-start">
+          No puede estar vacío y debe contener solo letras.
+        </p>
+      </ion-text>
+
+      <ion-item class="input-item">
+        <ion-label position="floating"></ion-label>
+        <ion-input
+          name="apellidomat"
+          [(ngModel)]="apellidoMat"
+          required
+          [class.anim-mover]="animarApellido"
+          #apellidoMatCtrl="ngModel"
+          placeholder="Apellido Materno"
+        ></ion-input>
+      </ion-item>
+      <ion-text
+        class="p-error"
+        color="danger"
+        *ngIf="(form.submitted || apellidoMatCtrl.touched) && isApellidoMatInvalid()"
+      >
+        <p class="ion-padding-start">
+          No puede estar vacío y debe contener solo letras.
+        </p>
+      </ion-text>
+
+      <ion-item class="input-item">
+        <ion-label position="floating"></ion-label>
+        <ion-input
+          name="correo"
+          [(ngModel)]="correo"
+          required
+          [class.anim-mover]="animarApellido"
+          #correoCtrl="ngModel"
+          placeholder="Correo Electrónico"
+        ></ion-input>
+      </ion-item>
+      <ion-text
+        class="p-error"
+        color="danger"
+        *ngIf="(form.submitted || correoCtrl.touched) && isEmailInvalid()"
+      >
+        <p class="ion-padding-start">Debe ser un correo electrónico válido.</p>
+      </ion-text>
+
+      <ion-item class="input-item">
+        <ion-label position="floating"></ion-label>
+        <ion-input
+          name="contrasena"
+          [(ngModel)]="contrasena"
+          required
+          type="password"
+          [class.anim-mover]="animarApellido"
+          #contrasenaCtrl="ngModel"
+          placeholder="Contraseña"
+        ></ion-input>
+      </ion-item>
+      <ion-text
+        class="p-error"
+        color="danger"
+        *ngIf="(form.submitted || contrasenaCtrl.touched) && isPasswordInvalid()"
+      >
+        <p class="ion-padding-start">Debe ser numérica de 6 dígitos.</p>
+      </ion-text>
+
+      <ion-item class="input-item">
+        <ion-label position="floating"></ion-label>
+        <ion-input
+          name="confcontrasena"
+          [(ngModel)]="confContrasena"
+          required
+          type="password"
+          [class.anim-mover]="animarApellido"
+          #confContrasenaCtrl="ngModel"
+          placeholder="Confirma tu contraseña"
+        ></ion-input>
+      </ion-item>
+      <ion-text
+        class="p-error"
+        color="danger"
+        *ngIf="(form.submitted || confContrasenaCtrl.touched) && isConfPasswordInvalid()"
+      >
+        <p class="ion-padding-start">Ambas contraseñas deben coincidir.</p>
+      </ion-text>
+
+      <ion-item class="input-item">
+        <ion-label position="floating"></ion-label>
+        <ion-input
+          name="telefono"
+          [(ngModel)]="telefono"
+          required
+          [class.anim-mover]="animarApellido"
+          #telefonoCtrl="ngModel"
+          placeholder="Teléfono (+56912345678)"
+        ></ion-input>
+      </ion-item>
+      <ion-text
+        class="p-error"
+        color="danger"
+        *ngIf="(form.submitted || telefonoCtrl.touched) && isTelefonoInvalid()"
+      >
+        <p class="ion-padding-start">
+          El teléfono debe comenzar con +56 y tener 9 dígitos.
+        </p>
+      </ion-text>
+
+      <div class="buttons">
+        <ion-button expand="block" class="btn-volver" routerLink="/login">
+          Volver
+        </ion-button>
+
+        <ion-button
+          expand="block"
+          class="btn-limpiar"
+          (click)="limpiarCampos()"
+        >
+          Limpiar
+        </ion-button>
+
+        <ion-button expand="block" class="btn-crear" type="submit">
+          Crear cuenta
+        </ion-button>
+      </div>
+    </form>
+  </div>
+</ion-content>
