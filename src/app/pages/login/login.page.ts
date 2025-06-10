@@ -69,7 +69,7 @@ async login(form: any) {
 
   async presentAlert(mensaje: string) {
     const alert = await this.alertController.create({
-      header: 'Validación',
+      header: 'Ocurrió un error',
       message: mensaje,
       buttons: ['OK'],
     });
