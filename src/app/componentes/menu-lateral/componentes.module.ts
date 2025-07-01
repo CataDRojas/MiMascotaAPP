@@ -11,6 +11,6 @@ import { RouterModule } from '@angular/router';
     IonicModule,
     RouterModule
   ],
-  exports: [MenuLateralComponent] // ← permite usarlo en otros módulos
+  exports: [MenuLateralComponent]
 })
 export class ComponentesModule {}

@@ -1,11 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Router  } from '@angular/router';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-
-interface Usuario {
-  correo: string;
-  contrasena: string;
-}
+import { DbserviceService } from 'src/app/services/dbservice.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -17,53 +14,53 @@ export class LoginPage {
   correo: string = '';
   contrasena: string = '';
 
-constructor(
-  private router: Router,
-  private alertController: AlertController
-) {}
+  constructor(
+    private router: Router,
+    private alertController: AlertController,
+    private dbService: DbserviceService
+  ) { }
 
-isEmailInvalid(): boolean {
-  return (
+  isEmailInvalid(): boolean {
+    return (
       !this.correo ||
       !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(this.correo)
     );
-}
+  }
 
-isPasswordInvalid(): boolean {
-  return !this.contrasena || !/^\d{6}$/.test(this.contrasena);
-}
+  isPasswordInvalid(): boolean {
+    return !this.contrasena || !/^\d{6}$/.test(this.contrasena);
+  }
 
-async login(form: any) {
+
+  async login(form: any) {
     if (this.isEmailInvalid() || this.isPasswordInvalid()) {
       await this.presentAlert('¡Ups! Debes ingresar datos válidos.');
       return;
     }
 
-    const usuariosGuardadosJSON = localStorage.getItem('usuarios');
-    const usuariosGuardados: Usuario[] = usuariosGuardadosJSON ? JSON.parse(usuariosGuardadosJSON) : [];
+    const dbReady = await firstValueFrom(this.dbService.getDatabaseState());
+    if (!dbReady) {
+      await this.presentAlert('La base de datos no está lista. Intenta en unos segundos.');
+      return;
+    }
 
-    const usuarioEncontrado = usuariosGuardados.find(
-      u => u.correo === this.correo
+    const usuarioEncontrado = await this.dbService.validarCredenciales(
+      this.correo.trim(),
+      this.contrasena.trim()
     );
 
     if (!usuarioEncontrado) {
-      await this.presentAlert('El correo no está registrado. Por favor, regístrate primero.');
+      await this.presentAlert('Correo o contraseña incorrectos.');
       return;
     }
 
-    if (usuarioEncontrado.contrasena !== this.contrasena) {
-      await this.presentAlert('Contraseña incorrecta. Intenta nuevamente.');
-      return;
-    }
-
-    localStorage.setItem('usuario_logueado', this.correo);
+    localStorage.setItem('usuarioActual', JSON.stringify(usuarioEncontrado));
     (document.activeElement as HTMLElement)?.blur();
-    this.router.navigate(['/home'], {
-      queryParams: { user: this.correo }
-    });
+    this.router.navigate(['/home']);
   }
 
   registroUsuario() {
+    console.log('click en registrarse');
     this.router.navigate(['/registro-usuario']);
   }
 
@@ -76,6 +73,4 @@ async login(form: any) {
 
     await alert.present();
   }
-
-  
 }

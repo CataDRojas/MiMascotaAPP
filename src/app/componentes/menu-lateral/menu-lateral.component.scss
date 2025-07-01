@@ -10,6 +10,21 @@ ion-content {
 
 ion-toolbar ion-title {
   font-weight: 700;
-  font-size: 1.8rem;
+  font-size: 1.3rem;
   color: #3178c6;
 }
+ion-list {
+  background: transparent !important;
+  --background: transparent !important;
+}
+
+
+ion-item {
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+  margin-bottom: 10px;
+  --padding-start: 16px;
+  --inner-padding-end: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
+import { DbserviceService } from 'src/app/services/dbservice.service';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
   selector: 'app-registrar-mascota',
@@ -11,26 +13,63 @@ import { AlertController } from '@ionic/angular';
 export class RegistrarMascotaPage {
   mascota = {
     nombre: '',
-    foto: 'assets/img-mascota/gato.jpg', //imagen por defecto, se cambia cuando se selecciona la especie
+    foto: '',
     fechaNacimiento: '',
-    especie: 'Gato',
+    especie: '',
     colores: '',
     sexo: '',
     chip: ''
   };
 
-  constructor(private navCtrl: NavController, private alertCtrl: AlertController) { }
+  constructor(private navCtrl: NavController, private alertCtrl: AlertController, private dbService: DbserviceService) { }
 
-  actualizarFotoPorEspecie() {
-    if (!this.mascota.foto || this.mascota.foto.startsWith('assets/')) {
-      this.mascota.foto = this.imagenPorDefecto();
+  async seleccionarFoto() {
+    try {
+      const imagen = await Camera.getPhoto({
+        quality: 100,
+        allowEditing: false,
+        resultType: CameraResultType.DataUrl,
+        source: CameraSource.Prompt
+      });
+
+      if (imagen && imagen.dataUrl) {
+        const redimensionada = await this.redimensionarImagen(imagen.dataUrl, 600, 600);
+        this.mascota.foto = redimensionada;
+      }
+    } catch (error) {
+      console.error('Error al obtener foto:', error);
+      this.mostrarAlerta('No se pudo obtener la foto.');
     }
   }
+  redimensionarImagen(dataUrl: string, maxWidth: number, maxHeight: number): Promise<string> {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
 
-  imagenPorDefecto(): string {
-    return this.mascota.especie === 'Perro'
-      ? 'assets/img-mascota/perro.jpg'
-      : 'assets/img-mascota/gato.jpg';
+        if (width > height) {
+          if (width > maxWidth) {
+            height = (height * maxWidth) / width;
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = (width * maxHeight) / height;
+            height = maxHeight;
+          }
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d')!;
+        ctx.drawImage(img, 0, 0, width, height);
+        const resizedDataUrl = canvas.toDataURL('image/jpeg', 0.95);
+        resolve(resizedDataUrl);
+      };
+      img.src = dataUrl;
+    });
   }
 
   async guardarMascota(form: any) {
@@ -39,30 +78,33 @@ export class RegistrarMascotaPage {
       return;
     }
 
-    const correo = localStorage.getItem('usuario_logueado');
-    if (!correo) {
+    const usuario = localStorage.getItem('usuarioActual');
+    if (!usuario) {
       return this.mostrarAlerta('No se pudo obtener el usuario logueado.');
     }
 
-    const claveMascotas = `mascotas_${correo}`;
-    const mascotas = JSON.parse(localStorage.getItem(claveMascotas) || '[]');
+    const correo = JSON.parse(usuario).correo;
 
     const nuevaMascota = {
-      ...this.mascota,
-      id: Date.now()
+      nombre: this.mascota.nombre,
+      foto: this.mascota.foto,
+      fechaNacimiento: this.mascota.fechaNacimiento,
+      especie: this.mascota.especie,
+      colores: this.mascota.colores,
+      sexo: this.mascota.sexo,
+      chip: this.mascota.chip,
+      correo_usuario: correo
     };
 
-    mascotas.push(nuevaMascota);
+    const exito = await this.dbService.registrarMascota(nuevaMascota);
 
-    try {
-      localStorage.setItem(claveMascotas, JSON.stringify(mascotas));
-      console.log('Mascotas guardadas para', correo, ':', mascotas);
+    if (exito) {
       this.navCtrl.navigateBack('/home');
-    } catch (error) {
-      console.error('Error al guardar en localStorage:', error);
-      this.mostrarAlerta('No se pudo guardar la mascota.');
+    } else {
+      this.mostrarAlerta('No se pudo guardar la mascota en la base de datos.');
     }
   }
+
 
   guardarFechaNacimiento(event: any) {
     this.mascota.fechaNacimiento = event.detail.value;

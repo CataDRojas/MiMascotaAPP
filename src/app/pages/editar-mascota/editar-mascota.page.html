@@ -1,0 +1,69 @@
+<app-menu-lateral></app-menu-lateral>
+
+<ion-header>
+  <ion-toolbar class="sub-toolbar">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" [routerLink]="['/ficha-mascota', id]">
+        <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Editar a {{ mascota?.nombre }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" *ngIf="mascota">
+  <div class="foto-container ion-text-center ion-margin-bottom">
+    <img
+      [src]="mascota.foto || 'assets/default-mascota.jpg'"
+      alt="Foto de {{ mascota.nombre }}"
+      class="foto-mascota"
+    />
+  </div>
+
+  <ion-list lines="none">
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input [(ngModel)]="mascota.nombre"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Fecha de nacimiento</ion-label>
+      <ion-datetime
+        display-format="DD/MM/YYYY"
+        [(ngModel)]="mascota.fechaNacimiento"
+      ></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Especie</ion-label>
+      <ion-select [(ngModel)]="mascota.especie">
+        <ion-select-option value="Gato">Gato</ion-select-option>
+        <ion-select-option value="Perro">Perro</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Colores</ion-label>
+      <ion-input [(ngModel)]="mascota.colores"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Sexo</ion-label>
+      <ion-select [(ngModel)]="mascota.sexo">
+        <ion-select-option value="Macho">Macho</ion-select-option>
+        <ion-select-option value="Hembra">Hembra</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Chip</ion-label>
+      <ion-input [(ngModel)]="mascota.chip"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="block" color="success" (click)="guardarCambios()">
+    <ion-icon name="save-outline" slot="start"></ion-icon>
+    Guardar Cambios
+  </ion-button>
+</ion-content>

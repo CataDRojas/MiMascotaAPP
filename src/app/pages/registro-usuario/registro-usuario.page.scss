@@ -11,6 +11,7 @@ ion-content {
 
 .home-container {
   width: 100%;
+  margin-top: 2.5rem;
   max-width: 450px;
   background: white;
   padding: 2rem;
@@ -66,7 +67,6 @@ ion-content {
   --background-activated: #5b9dbc;
 }
 
-//animacion para el boton limpiar
 @keyframes moverIzqADer {
   0% {
     transform: translateX(0);

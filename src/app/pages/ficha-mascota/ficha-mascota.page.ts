@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController, NavController } from '@ionic/angular';
+import { DbserviceService } from 'src/app/services/dbservice.service';
 
 @Component({
   selector: 'app-ficha-mascota',
@@ -8,32 +9,41 @@ import { AlertController, NavController } from '@ionic/angular';
   styleUrls: ['./ficha-mascota.page.scss'],
   standalone: false,
 })
-export class FichaMascotaPage implements OnInit {
+export class FichaMascotaPage {
   mascota: any = null;
   correo: string = '';
+  idMascota: number = 0;
 
   constructor(
     private route: ActivatedRoute,
     private alertCtrl: AlertController,
-    private navCtrl: NavController
-  ) { }
+    private navCtrl: NavController,
+    private dbService: DbserviceService
+  ) {}
 
-  ngOnInit() {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.correo = localStorage.getItem('usuario_logueado') || '';
+  ionViewWillEnter() {
+    this.cargarFicha();
+  }
 
-    if (!this.correo) {
+  async cargarFicha() {
+    this.idMascota = Number(this.route.snapshot.paramMap.get('id'));
+    console.log('ID recibido:', this.idMascota);
+
+    const usuario = localStorage.getItem('usuarioActual');
+    if (!usuario) {
       console.error('No hay usuario logueado');
       return;
     }
 
-    const data = localStorage.getItem(`mascotas_${this.correo}`);
-    const lista = data ? JSON.parse(data) : [];
+    this.correo = JSON.parse(usuario).correo;
 
-    this.mascota = lista.find((m: any) => m.id === id);
+    const mascotas = await this.dbService.obtenerMascotasPorUsuario(this.correo);
+    console.log('Mascotas actualizadas:', mascotas);
+
+    this.mascota = mascotas.find(m => Number(m.id) === this.idMascota);
 
     if (!this.mascota) {
-      console.warn('Mascota no encontrada con id:', id);
+      console.warn('Mascota no encontrada con ID:', this.idMascota);
     }
   }
 
@@ -48,16 +58,17 @@ export class FichaMascotaPage implements OnInit {
         },
         {
           text: 'Eliminar',
-          handler: () => {
-            const mascotasGuardadas = JSON.parse(localStorage.getItem(`mascotas_${this.correo}`) || '[]');
-            const actualizadas = mascotasGuardadas.filter((m: any) => m.id !== this.mascota.id);
-
-            localStorage.setItem(`mascotas_${this.correo}`, JSON.stringify(actualizadas));
+          handler: async () => {
+            await this.dbService.borrarMascotaPorId(this.mascota.id);
             this.navCtrl.navigateRoot('/home');
           },
           cssClass: 'danger'
         }
       ]
     }).then(alerta => alerta.present());
+  }
+
+  editarMascota() {
+    this.navCtrl.navigateForward(`/editar-mascota/${this.idMascota}`);
   }
 }

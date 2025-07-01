@@ -1,16 +1,7 @@
 import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
-
-interface Usuario {
-  id: number;
-  nombres: string;
-  apellidoPat: string;
-  apellidoMat: string;
-  correo: string;
-  contrasena: string;
-  telefono: string;
-}
+import { DbserviceService } from 'src/app/services/dbservice.service';
 
 @Component({
   selector: 'app-registro-usuario',
@@ -32,8 +23,9 @@ export class RegistroUsuarioPage {
 
   constructor(
     private router: Router,
-    private alertController: AlertController
-  ) { }
+    private alertController: AlertController,
+    private dbService: DbserviceService
+  ) {}
 
   limpiarCampos() {
     this.nombres = '';
@@ -52,6 +44,7 @@ export class RegistroUsuarioPage {
     }, 1000);
   }
 
+  // VALIDACIONES
   isNombreInvalid(): boolean {
     return !this.nombres || !/^[a-zA-ZÁÉÍÓÚÑáéíóúñ\s]+$/.test(this.nombres);
   }
@@ -83,6 +76,7 @@ export class RegistroUsuarioPage {
     return !this.telefono || !/^\+56\d{9}$/.test(this.telefono);
   }
 
+  // REGISTRO
   async registrar(form: any) {
     if (
       this.isNombreInvalid() ||
@@ -93,41 +87,26 @@ export class RegistroUsuarioPage {
       this.isConfPasswordInvalid() ||
       this.isTelefonoInvalid()
     ) {
-      await this.presentAlert(
-        'Asegúrate de que todos los campos sean válidos.'
-      );
+      await this.presentAlert('Asegúrate de que todos los campos sean válidos.');
       return;
     }
 
-    const usuariosGuardados: Usuario[] = JSON.parse(
-      localStorage.getItem('usuarios') || '[]'
-    );
-
-    const nuevoUsuario: Usuario = {
-      id: Date.now(),
+    const exito = await this.dbService.registrarUsuario({
       nombres: this.nombres,
       apellidoPat: this.apellidoPat,
       apellidoMat: this.apellidoMat,
       correo: this.correo,
       contrasena: this.contrasena,
       telefono: this.telefono
-    };
+    });
 
-    const correoYaRegistrado = usuariosGuardados.some(
-      (u: Usuario) => u.correo === nuevoUsuario.correo
-    );
-
-    if (correoYaRegistrado) {
-      await this.presentAlert('Este correo ya está registrado. Usa otro o inicia sesión.');
+    if (!exito) {
+      await this.presentAlert('Este correo ya está registrado o ocurrió un error.');
       return;
     }
 
-    //Cuando se registra el usuario, se guarda en la lista de 'usuarios' en el localStorage
-    usuariosGuardados.push(nuevoUsuario);
-    localStorage.setItem('usuarios', JSON.stringify(usuariosGuardados));
-
-    // Guardar sesión activa en el localStorage
-    localStorage.setItem('usuarioActual', JSON.stringify(nuevoUsuario));
+    // Guardar sesión 
+    localStorage.setItem('usuarioActual', JSON.stringify({ correo: this.correo }));
 
     const alert = await this.alertController.create({
       header: '¡Registro exitoso!',

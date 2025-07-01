@@ -11,7 +11,7 @@
     <ion-title>Ficha de {{ mascota?.nombre }}</ion-title>
 
     <ion-buttons slot="end">
-      <ion-button fill="clear">
+      <ion-button fill="clear" (click)="editarMascota()">
         <ion-icon name="create-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -21,7 +21,7 @@
 <ion-content id="main-content" *ngIf="mascota" class="ion-padding">
   <div class="foto-container ion-text-center ion-margin-bottom">
     <img
-      [src]="mascota.foto"
+      [src]="mascota.foto || 'assets/default-mascota.jpg'"
       alt="Foto de {{ mascota.nombre }}"
       class="foto-mascota"
     />

@@ -36,11 +36,37 @@
     <ion-item>
       <div class="ion-text-center ion-margin-top">
         <img
-          [src]="mascota.foto || imagenPorDefecto()"
+          [src]="mascota.foto"
           alt="Foto de la mascota"
           style="width: 150px; border-radius: 10px"
         />
       </div>
+    </ion-item>
+    <ion-item lines="none" class="ion-justify-content-center ion-margin-top">
+      <ion-button expand="block" (click)="seleccionarFoto()">
+        Seleccionar Foto
+      </ion-button>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="paw-outline" slot="start"></ion-icon>
+      <ion-label position="stacked">Especie</ion-label>
+      <ion-select
+        [(ngModel)]="mascota.especie"
+        name="especie"
+        required
+        #especieCtrl="ngModel"
+      >
+        <ion-select-option value="Gato">Gato</ion-select-option>
+        <ion-select-option value="Perro">Perro</ion-select-option>
+      </ion-select>
+      <ion-text
+        class="p-error"
+        color="danger"
+        *ngIf="(form.submitted || especieCtrl.touched) && especieCtrl.invalid"
+      >
+        <p class="ion-padding-start">La especie es obligatoria.</p>
+      </ion-text>
     </ion-item>
 
     <ion-item>
@@ -75,29 +101,7 @@
         </ion-datetime>
       </ng-template>
     </ion-modal>
-
-    <ion-item>
-      <ion-icon name="paw-outline" slot="start"></ion-icon>
-      <ion-label position="stacked">Especie</ion-label>
-      <ion-select
-        [(ngModel)]="mascota.especie"
-        name="especie"
-        required
-        (ionChange)="actualizarFotoPorEspecie()"
-        #especieCtrl="ngModel"
-      >
-        <ion-select-option value="Gato">Gato</ion-select-option>
-        <ion-select-option value="Perro">Perro</ion-select-option>
-      </ion-select>
-      <ion-text
-        class="p-error"
-        color="danger"
-        *ngIf="(form.submitted || especieCtrl.touched) && especieCtrl.invalid"
-      >
-        <p class="ion-padding-start">La especie es obligatoria.</p>
-      </ion-text>
-    </ion-item>
-
+    
     <ion-item>
       <ion-icon
         name="color-palette-outline"

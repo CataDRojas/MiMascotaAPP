@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
-import { AlertController } from '@ionic/angular';
+import { Component } from '@angular/core';
+import { NavController, AlertController, MenuController } from '@ionic/angular';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-menu-lateral',
@@ -9,23 +9,36 @@ import { AlertController } from '@ionic/angular';
   standalone: false,
 })
 export class MenuLateralComponent {
+  mostrarMenu = true;
 
-  constructor(private navCtrl: NavController, private alertController: AlertController) { }
+  constructor(
+    private navCtrl: NavController,
+    private alertController: AlertController,
+    private router: Router,
+    private menuCtrl: MenuController
+  ) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        const rutasSinMenu = ['/login', '/registro-usuario', '/bienvenida'];
+        this.mostrarMenu = !rutasSinMenu.includes(event.urlAfterRedirects);
+      }
+    });
+  }
 
   async cerrarSesion() {
-    localStorage.removeItem('usuario_logueado');
-    console.log('Sesión cerrada correctamente');
-
+    localStorage.removeItem('usuarioActual');
     const alert = await this.alertController.create({
       header: '¡Adiós!',
       message: 'Has cerrado sesión correctamente.',
       buttons: ['OK']
     });
-
     await alert.present();
-
     await alert.onDidDismiss();
     this.navCtrl.navigateRoot('/login');
   }
+
+  cerrarMenu() {
+  this.menuCtrl.close();
+}
 
 }

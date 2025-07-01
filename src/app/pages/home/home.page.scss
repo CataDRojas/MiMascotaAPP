@@ -5,7 +5,7 @@ ion-content {
 ion-toolbar ion-title {
   font-weight: 700;
   font-size: 1.8rem;
-  color: #3178c6; /* color azul o el que quieras para el nombre app */
+  color: #3178c6;
 }
 
 .mascota-card {
@@ -39,8 +39,8 @@ ion-toolbar ion-title {
 
 .foto-mascota {
   width: 100%;
-  height: 250px;
-  object-fit: contain;
+  height: 200px;
+  object-fit: cover;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
 }

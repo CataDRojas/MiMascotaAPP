@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>MiMascota</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content id="main-content" class="ion-padding">
+  <div class="intro-container ion-text-center">
+    <ion-icon name="paw-outline" class="intro-icon" color="primary"></ion-icon>
+    <h2>¡Descubre nuevas razas!</h2>
+    <p class="intro-sub">
+      Aprende más sobre las razas de perros y gatos.<br />
+      ¡Elige una y sorpréndete! 🐶🐱
+    </p>
+  </div>
+
+  <!-- Selección de especie -->
+  <ion-card class="selector-card">
+    <ion-card-content>
+      <ion-label class="selector-title">Selecciona el tipo de animal</ion-label>
+      <ion-segment
+        [(ngModel)]="tipoAnimal"
+        (ionChange)="cargarRazas()"
+        value="gato"
+      >
+        <ion-segment-button value="gato">
+          <ion-label>Gato</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="perro">
+          <ion-label>Perro</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Selección de raza dependiendo la especie que elegiste -->
+  <ion-card class="selector-card">
+    <ion-card-content>
+      <ion-label class="selector-title">Selecciona una raza</ion-label>
+      <ion-select
+        placeholder="Raza"
+        class="selector-estilizado"
+        (ionChange)="mostrarRaza($event)"
+      >
+        <ion-select-option
+          *ngFor="let raza of razas; let i = index"
+          [value]="tipoAnimal === 'gato' ? raza.id : i"
+        >
+          {{ raza.name }}
+        </ion-select-option>
+      </ion-select>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Si no hay raza seleccionada -->
+  <ion-card *ngIf="!razaSeleccionada" class="no-raza-card">
+    <ion-card-content class="ion-text-center">
+      <ion-icon
+        name="search-outline"
+        class="no-raza-icon"
+        color="primary"
+      ></ion-icon>
+      <p class="no-raza-text">
+        Selecciona una raza del listado para ver información aquí.
+      </p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Cuando seleccionaste la raza, te aparece la información -->
+  <ion-card *ngIf="razaSeleccionada" class="raza-card">
+    <img [src]="imagen || 'assets/default-raza.jpg'" alt="Foto de raza" />
+    <ion-card-header>
+      <ion-card-title>{{ razaSeleccionada.name }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{ descripcion }}</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
