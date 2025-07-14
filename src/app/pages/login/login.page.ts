@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { DbserviceService } from 'src/app/services/dbservice.service';
-import { firstValueFrom } from 'rxjs';
+//import { DbserviceService } from 'src/app/services/dbservice.service';
+//import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +17,7 @@ export class LoginPage {
   constructor(
     private router: Router,
     private alertController: AlertController,
-    private dbService: DbserviceService
+    //private dbService: DbserviceService
   ) { }
 
   isEmailInvalid(): boolean {
@@ -38,23 +38,24 @@ export class LoginPage {
       return;
     }
 
-    const dbReady = await firstValueFrom(this.dbService.getDatabaseState());
-    if (!dbReady) {
-      await this.presentAlert('La base de datos no está lista. Intenta en unos segundos.');
-      return;
-    }
+    // const dbReady = await firstValueFrom(this.dbService.getDatabaseState());
+    // if (!dbReady) {
+    //   await this.presentAlert('La base de datos no está lista. Intenta en unos segundos.');
+    //   return;
+    // }
 
-    const usuarioEncontrado = await this.dbService.validarCredenciales(
-      this.correo.trim(),
-      this.contrasena.trim()
-    );
+    // const usuarioEncontrado = await this.dbService.validarCredenciales(
+    //   this.correo.trim(),
+    //   this.contrasena.trim()
+    // );
 
-    if (!usuarioEncontrado) {
-      await this.presentAlert('Correo o contraseña incorrectos.');
-      return;
-    }
+    // if (!usuarioEncontrado) {
+    //   await this.presentAlert('Correo o contraseña incorrectos.');
+    //   return;
+    // }
 
-    localStorage.setItem('usuarioActual', JSON.stringify(usuarioEncontrado));
+    //localStorage.setItem('usuarioActual', JSON.stringify(usuarioEncontrado));
+    localStorage.setItem('usuarioActual', JSON.stringify({ correo: this.correo }));
     (document.activeElement as HTMLElement)?.blur();
     this.router.navigate(['/home']);
   }
