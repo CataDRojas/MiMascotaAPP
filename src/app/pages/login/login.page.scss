@@ -11,11 +11,18 @@ ion-content {
 .login-container {
   width: 100%;
   padding: 24px;
-  margin-top: 5rem;
+  margin-top: 3rem;
   background-color: #ffffff;
   border-radius: 16px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
+}
+.login-logo {
+  width: 240px;
+  height: auto;
+  margin: 0px auto;
+  display: block;
+  object-fit: contain;
 }
 
 .login-title {
@@ -33,14 +40,24 @@ ion-content {
 }
 
 .login-title2 {
-  margin-top: 0;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: bold;
-  color: #222;
+  color: #3b3b3b;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.login-title2::after {
+  content: '';
+  display: block;
+  margin: 8px auto 0;
+  width: 60px;
+  height: 3px;
+  background-color: #5b9dbc;
+  border-radius: 2px;
 }
 
 .login-subtitle {
-  margin-bottom: 20px;
   font-size: 14px;
   color: #666;
 }

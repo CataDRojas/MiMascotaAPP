@@ -5,7 +5,22 @@ ion-content {
 .logo-container {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin: 20px 0;
+}
+
+.logo-menu {
+  width: 150px;
+  height: auto;
+  overflow: hidden;
+  border-radius: 10%;
+  border: 1.5px solid #CAEFF6;
+}
+
+ion-toolbar ion-title {
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: #3178c6;
 }
 
 ion-toolbar ion-title {
